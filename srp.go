@@ -206,8 +206,8 @@ type Verifier struct {
 // in the environment 's'. It returns an instance of Verifier that holds the
 // parameters needed for a future authentication.
 func (s *SRP) Verifier(I, p []byte) (*Verifier, error) {
-	ih := s.hashbyte(I)
-	ph := s.hashbyte(p)
+	ih := I
+	ph := p
 	pf := s.pf
 	salt := randbytes(pf.n)
 	x := s.hashint(ih, ph, salt)
@@ -325,8 +325,8 @@ func (s *SRP) NewClient(I, p []byte) (*Client, error) {
 	pf := s.pf
 	c := &Client{
 		s: s,
-		i: s.hashbyte(I),
-		p: s.hashbyte(p),
+		i: I,
+		p: p,
 		a: randBigInt(pf.n * 8),
 		k: s.hashint(pf.N.Bytes(), pad(pf.g, pf.n)),
 	}
